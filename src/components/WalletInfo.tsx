@@ -1,9 +1,5 @@
 import React from 'react';
-
-interface WalletProps {
-  address: string;
-  balance: number;
-}
+import { WalletProps } from '../interfaces';
 
 export const WalletInfo: React.FC<WalletProps> = props => {
   return (
