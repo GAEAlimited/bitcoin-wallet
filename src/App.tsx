@@ -60,7 +60,7 @@ const App: React.FC = () => {
   };
 
   useEffect(() => {
-    let savedUserWallet = JSON.parse(localStorage.getItem('userWallet') || '');
+    let savedUserWallet = JSON.parse(localStorage.getItem('userWallet') || "{address: '',wif: ''}");
     if (!savedUserWallet.address) {
       savedUserWallet = generateUserWallet();
     }
