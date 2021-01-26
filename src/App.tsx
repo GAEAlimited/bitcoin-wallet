@@ -18,7 +18,9 @@ const App: React.FC = () => {
     address: '',
     wif: ''
   });
-  const [balance, setBalance] = useState(0);
+  const [balance, setBalance] = useState<number>(0);
+  const [lastTxHash, setLastTxHash] = useState<string>('');
+  const [outputNumber, setOutputNumber] = useState<number>(0);
 
   const generateUserWallet = () => {
     const keyPair = bitcoin.ECPair.makeRandom({ network: TESTNET });
@@ -43,6 +45,16 @@ const App: React.FC = () => {
       })
       .then(response => {
         const balance = response.data.balance / 10 ** 8;
+        if (balance > 0) {
+          const lastTx = response.data.txs[0];
+          const lastTxHash = lastTx.hash;
+          const outputNumber = lastTx.outputs.findIndex(
+            // @ts-ignore
+            output => output.addresses[0] === address
+          );
+          setOutputNumber(outputNumber);
+          setLastTxHash(lastTxHash);
+        }
         setBalance(balance);
       })
       .catch(error => {
@@ -52,10 +64,8 @@ const App: React.FC = () => {
 
   useEffect(() => {
     let savedUserWallet = JSON.parse(localStorage.getItem('userWallet') || '');
-    console.log('qwerty', savedUserWallet);
     if (!savedUserWallet.address) {
       savedUserWallet = generateUserWallet();
-      console.log('eweewrwe', savedUserWallet);
     }
     setUserWallet(savedUserWallet);
   }, []);
@@ -67,7 +77,13 @@ const App: React.FC = () => {
   return (
     <>
       <WalletInfo address={userWallet.address} balance={balance} />
-      {balance ? <SendBTC /> : <p>You need some BTC for make transaction</p>}
+      <SendBTC
+        balance={balance}
+        txid={lastTxHash}
+        outputNumber={outputNumber}
+        network={TESTNET}
+        wif={userWallet.wif}
+      />
     </>
   );
 };
