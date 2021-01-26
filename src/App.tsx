@@ -3,11 +3,12 @@ import { SendBTC } from './components/SendBTC';
 import { WalletInfo } from './components/WalletInfo';
 import * as axiosDef from 'axios';
 import * as bitcoin from 'bitcoinjs-lib';
+
 import { UserWallet } from './interfaces';
+import { TESTNET_API_ADDRESS } from './constants';
 
 const axios = axiosDef.default;
 const TESTNET = bitcoin.networks.testnet;
-const TESTNET_API_ADDRESS = 'https://api.blockcypher.com/v1/btc/test3/addrs/';
 
 const App: React.FC = () => {
   const [userWallet, setUserWallet] = useState<UserWallet>({

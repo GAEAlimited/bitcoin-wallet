@@ -1,12 +1,11 @@
 import React, { useState } from 'react';
 import * as bitcoin from 'bitcoinjs-lib';
 import * as axiosDef from 'axios';
+
 import { SendBTCProps } from '../interfaces';
+import { SMARTBIT_API, TESTNET_EXPLORER } from '../constants';
 
 const axios = axiosDef.default;
-const SMARTBIT_API = 'https://testnet-api.smartbit.com.au/v1/blockchain';
-
-const TESTNET_EXPLORER = 'https://live.blockcypher.com/btc-testnet/tx/';
 
 export const SendBTC: React.FC<SendBTCProps> = props => {
   const { balance, txid, outputNumber, network, wif } = props;
